@@ -140,7 +140,8 @@ async fn run(
 
     let swapchain_capabilities = window_surface.get_capabilities(&adapter);
     let swapchain_format = get_preferred_format(&swapchain_capabilities);
-    log::debug!("Swapchain format: {:?}", swapchain_format);
+    log::info!("Swapchain format: {:?}", swapchain_format);
+    log::info!("Available formats: {:?}", swapchain_capabilities.formats);
 
     let physical_size = window.inner_size();
     let mut config = wgpu::SurfaceConfiguration {
@@ -261,7 +262,7 @@ fn get_preferred_format(capabilities: &wgpu::SurfaceCapabilities) -> wgpu::Textu
     // Prefer non-srgb formats, as we will be doing linear math in the shaders.
     // If the swapchain doesn't support any non-srgb formats, we will fall back to srgb.
     let preferred_formats = [
-        // wgpu::TextureFormat::Rgb10a2Unorm, // TODO: does 10-bit make a difference here?
+        wgpu::TextureFormat::Rgb10a2Unorm,
         wgpu::TextureFormat::Bgra8Unorm,
         wgpu::TextureFormat::Rgba8Unorm,
         wgpu::TextureFormat::Bgra8UnormSrgb,
