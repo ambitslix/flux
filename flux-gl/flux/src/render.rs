@@ -414,11 +414,11 @@ impl DoubleFramebuffer {
         Ok(())
     }
 
-    pub fn current(&self) -> Ref<Framebuffer> {
+    pub fn current(&self) -> Ref<'_, Framebuffer> {
         self.front.borrow()
     }
 
-    pub fn next(&self) -> Ref<Framebuffer> {
+    pub fn next(&self) -> Ref<'_, Framebuffer> {
         self.back.borrow()
     }
 

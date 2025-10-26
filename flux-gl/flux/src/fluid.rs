@@ -538,7 +538,7 @@ impl Fluid {
             });
     }
 
-    pub fn get_velocity(&self) -> Ref<Framebuffer> {
+    pub fn get_velocity(&self) -> Ref<'_, Framebuffer> {
         self.velocity_textures.current()
     }
 
@@ -546,7 +546,7 @@ impl Fluid {
         &self.divergence_texture
     }
 
-    pub fn get_pressure(&self) -> Ref<Framebuffer> {
+    pub fn get_pressure(&self) -> Ref<'_, Framebuffer> {
         self.pressure_textures.current()
     }
 
