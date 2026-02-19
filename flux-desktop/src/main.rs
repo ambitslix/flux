@@ -6,7 +6,7 @@ use std::sync::{Arc, Mutex};
 use tokio::sync::mpsc;
 
 use winit::{
-    event::{ElementState, Event, KeyEvent, WindowEvent},
+    event::{DeviceEvent, ElementState, Event, KeyEvent, WindowEvent},
     event_loop::EventLoop,
     keyboard::{KeyCode, PhysicalKey},
     window::WindowBuilder,
@@ -95,7 +95,7 @@ fn main() -> Result<(), impl std::error::Error> {
         .with_title("Flux")
         .with_decorations(true)
         .with_resizable(true)
-        .with_inner_size(logical_size)
+        .with_fullscreen(Some(winit::window::Fullscreen::Borderless(None)))
         .build(&event_loop)
         .unwrap();
 
@@ -195,17 +195,20 @@ async fn run(
             Event::AboutToWait => {
                 window.request_redraw();
             }
+            Event::DeviceEvent { event: DeviceEvent::MouseMotion { delta }, .. } => elwt.exit(),
+
             Event::WindowEvent { event, window_id } if window_id == window.id() => match event {
                 WindowEvent::CloseRequested
                 | WindowEvent::KeyboardInput {
                     event:
                         KeyEvent {
-                            physical_key: PhysicalKey::Code(KeyCode::Escape),
+                            physical_key: PhysicalKey::Code(KeyCode::Escape | KeyCode::Space | KeyCode::Enter | KeyCode::ControlLeft | KeyCode::ControlRight),
                             state: ElementState::Released,
                             ..
                         },
                     ..
                 } => elwt.exit(),
+
                 WindowEvent::DroppedFile(path) => {
                     let bytes = std::fs::read(path).unwrap();
                     app.decode_image(bytes);
