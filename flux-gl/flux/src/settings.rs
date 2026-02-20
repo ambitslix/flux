@@ -40,7 +40,7 @@ impl Default for Settings {
             pressure_mode: PressureMode::Retain,
             diffusion_iterations: 3,
             pressure_iterations: 19,
-            color_mode: ColorMode::Preset(ColorPreset::Original),
+            color_mode: ColorMode::Preset(ColorPreset::Plasma),
             line_length: 550.0,
             line_width: 10.0,
             line_begin_offset: 0.4,

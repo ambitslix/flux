@@ -1,6 +1,6 @@
 use flux::settings::{ColorMode, Settings};
 use flux::Flux;
-use glutin::event::{Event, WindowEvent};
+use glutin::event::{DeviceEvent, ElementState, Event, VirtualKeyCode, WindowEvent};
 use glutin::event_loop::{ControlFlow, EventLoop};
 use glutin::window::Window;
 use glutin::PossiblyCurrent;
@@ -43,8 +43,28 @@ fn main() {
                 flux.animate(start.elapsed().as_secs_f64() * 1000.0);
                 window.swap_buffers().unwrap();
             }
+            Event::DeviceEvent {
+                event: DeviceEvent::MouseMotion { delta },
+                ..
+            } => *control_flow = ControlFlow::Exit,
 
             Event::WindowEvent { ref event, .. } => match event {
+                WindowEvent::CloseRequested => *control_flow = ControlFlow::Exit,
+                WindowEvent::KeyboardInput { input, .. } => {
+                    if input.state == ElementState::Released {
+                        if let Some(keycode) = input.virtual_keycode {
+                            match keycode {
+                                VirtualKeyCode::Escape
+                                | VirtualKeyCode::Space
+                                | VirtualKeyCode::Return
+                                | VirtualKeyCode::LControl
+                                | VirtualKeyCode::RControl => *control_flow = ControlFlow::Exit,
+                                _ => (),
+                            }
+                        }
+                    }
+                }
+
                 WindowEvent::DroppedFile(path) => {
                     let settings = Settings {
                         color_mode: ColorMode::ImageFile(path.into()),
@@ -86,6 +106,7 @@ pub fn get_rendering_context(
         .with_title("Flux")
         .with_decorations(true)
         .with_resizable(true)
+        .with_fullscreen(Some(glutin::window::Fullscreen::Borderless(None)))
         .with_inner_size(logical_size);
 
     #[cfg(target_os = "macos")]

@@ -41,7 +41,7 @@ impl Default for Settings {
             pressure_mode: PressureMode::ClearWith(0.0),
             diffusion_iterations: 3,
             pressure_iterations: 19,
-            color_mode: ColorMode::Preset(ColorPreset::Original),
+            color_mode: ColorMode::Preset(ColorPreset::Freedom),
             line_length: 450.0,
             line_width: 9.0,
             line_begin_offset: 0.4,
@@ -128,6 +128,7 @@ impl ColorPreset {
         match self {
             ColorPreset::Plasma => Some(COLOR_SCHEME_PLASMA),
             ColorPreset::Poolside => Some(COLOR_SCHEME_POOLSIDE),
+            ColorPreset::Freedom => Some(COLOR_SCHEME_FREEDOM),
             _ => None,
         }
     }
@@ -159,4 +160,14 @@ pub static COLOR_SCHEME_POOLSIDE: [f32; 24] = [
     188.0 / 255.0, 228.0 / 255.0, 244.0 / 255.0, 1.0,
     124.0 / 255.0, 220.0 / 255.0, 236.0 / 255.0, 1.0,
     156.0 / 255.0, 208.0 / 255.0, 236.0 / 255.0, 1.0,
+];
+
+#[rustfmt::skip]
+pub static COLOR_SCHEME_FREEDOM: [f32; 24] = [
+    0.0 / 255.0,   87.0 / 255.0,  183.0 / 255.0, 1.0, // blue
+    0.0 / 255.0,   87.0 / 255.0,  183.0 / 255.0, 1.0, // blue
+    0.0 / 255.0,   87.0 / 255.0,  183.0 / 255.0, 1.0, // blue
+    1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
+    1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
+    1.0,           215.0 / 255.0, 0.0,           1.0, // yellow
 ];

@@ -69,6 +69,17 @@ impl App {
 fn main() -> Result<(), impl std::error::Error> {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
 
+    let args: Vec<String> = std::env::args().collect();
+    let mut linewidth = 1;
+    
+    for i in 0..args.len() {
+        if args[i] == "--linewidth" && i + 1 < args.len() {
+            linewidth = args[i + 1].parse::<i32>().unwrap_or(1);
+        }
+    }
+    
+    log::info!("Linewidth: {}", linewidth);
+
     let runtime = tokio::runtime::Builder::new_multi_thread()
         .worker_threads(1)
         .enable_all()
